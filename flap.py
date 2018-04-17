@@ -15,7 +15,7 @@ class Flap(arcade.Window):
         self.restart()
 
     def on_key_release(self, key: int, modifiers: int):
-        if (key == arcade.key.SPACE): 
+        if (key == arcade.key.SPACE) or (key == arcade.key.W): 
             self.bird.up()
         
     def restart(self):
@@ -47,8 +47,11 @@ class Flap(arcade.Window):
             if (pipe.centerX < -PIPE_WIDTH):
                 self.pipes.remove(pipe)
                 self.add_pipe()
-            else:
-                pipe.update()
+                continue
+            # else   
+            pipe.update()
+            if (pipe.hits(self.bird)):
+                self.restart()
         
         self.bird.update()
 

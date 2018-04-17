@@ -2,7 +2,7 @@ import arcade
 from random import uniform
 from math import floor
 from settings import WINDOW_HEIGHT, PIPE_WIDTH
-
+from bird import Bird
 class Pipe:
     def __init__(self, centerX, color):
         """ Constructor. """
@@ -11,7 +11,7 @@ class Pipe:
         self.centerX = centerX
         self.color = color
         self.changeX = -3
-        gapSize = 100
+        gapSize = floor(uniform(0.7, 1) * 100)
         gapLocation = floor(uniform(0.25, 0.75) * WINDOW_HEIGHT)
         gapTop = gapLocation - gapSize
         gapBottom = gapLocation + gapSize
@@ -26,6 +26,8 @@ class Pipe:
         self.upperHeight = WINDOW_HEIGHT - gapBottom
         self.upperCenterY = WINDOW_HEIGHT - (self.upperHeight // 2)
 
+        self.gapLocation = gapLocation
+        self.gapSize = gapSize
 
     def draw(self):
         """ Draw the pipe """
@@ -38,3 +40,11 @@ class Pipe:
         """ Code to control the pipe's movement. """
         # Move the ball
         self.centerX += self.changeX
+    
+    def hits(self, bird: Bird) -> bool:
+        radius = PIPE_WIDTH / 2
+
+        if (abs(bird.centerX - self.centerX) <= radius):
+            return (abs(bird.centerY - self.gapLocation) > self.gapSize)
+        # else
+        return False
