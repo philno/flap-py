@@ -1,15 +1,20 @@
 import arcade
 from settings import WINDOW_HEIGHT
 from math import sqrt
-
+from neural_network import NeuralNetwork
 class Bird:
-    def __init__(self):
+    def __init__(self, brain):
         self.changeY = -1.0123
         self.velocity = 0
         self.centerX = 40
         self.centerY = WINDOW_HEIGHT // 2
         self.score = 0
         self.frameCounter = 0
+        if (brain):
+            self.brain = brain
+        else:
+            # inputs: birdY, birdVelocity, nearestPipeDist, nearestPipeGap
+            self.brain = NeuralNetwork(4,2)
 
     def draw(self):
         """ Draw the bird """
@@ -26,7 +31,7 @@ class Bird:
             self.centerY = -1
 
         self.frameCounter += 1
-        if (self.frameCounter % 60 == 0): 
+        if (self.frameCounter % 61 == 0): 
             self.score += 1
             self.frameCounter = 0
     
@@ -42,4 +47,15 @@ class Bird:
         else:
             change = 20 + sqrt(abs(vel))
         self.velocity += change
+
+    def think(self, nearestPipeDist, nearestPipeGap):
+        inputs = []
+        # inputs: birdY, birdVelocity, nearestPipeDist, nearestPipeGap
+        inputs.append(self.centerY / WINDOW_HEIGHT)
+        inputs.append(self.velocity / 10)
+        inputs.append(nearestPipeDist)
+        inputs.append(nearestPipeGap)
+        outputs = self.brain.predict(inputs)[0]
+        if (outputs[0] > outputs[1]):
+            self.up()
                 
