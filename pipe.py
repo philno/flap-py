@@ -28,6 +28,7 @@ class Pipe:
 
         self.gapLocation = gapLocation
         self.gapSize = gapSize
+        self.rightCorner = centerX + (PIPE_WIDTH // 2)
 
     def draw(self):
         """ Draw the pipe """

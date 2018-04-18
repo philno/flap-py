@@ -15,8 +15,7 @@ class Flap(arcade.Window):
         self.restart()
 
     def on_key_release(self, key: int, modifiers: int):
-        if (key == arcade.key.SPACE) or (key == arcade.key.W): 
-            self.bird.up()
+        pass
         
     def restart(self):
         # Add a few pipes
@@ -27,7 +26,7 @@ class Flap(arcade.Window):
                 break
         
         # Add a bird
-        self.bird = Bird()
+        self.bird = Bird(None)
 
     def on_draw(self):
         """ Called whenever we need to draw the window. """
@@ -53,7 +52,12 @@ class Flap(arcade.Window):
             if (pipe.hits(self.bird)):
                 self.restart()
         
-        self.bird.update()
+        bird = self.bird
+        bird.update()
+        nearestPipe = self.get_nearest_pipe(bird)
+        nearestPipeDist = (nearestPipe.rightCorner - bird.centerX) / self.get_pipe_dist()
+        nearestPipeGap = nearestPipe.gapLocation / WINDOW_HEIGHT
+        bird.think(nearestPipeDist, nearestPipeGap)
 
     def add_pipe(self):
         insertAt = PIPE_WIDTH*6
@@ -64,6 +68,14 @@ class Flap(arcade.Window):
 
     def get_pipe_dist(self):
         return PIPE_WIDTH * 4 + 10
+
+    def get_nearest_pipe(self, bird: Bird) -> Pipe:
+        for pipe in self.pipes:
+            if (pipe.rightCorner < bird.centerX):
+                continue
+            #else
+            return pipe
+            
 
 def main():
     window = Flap(WINDOW_WIDTH, WINDOW_HEIGHT, "flap-py")

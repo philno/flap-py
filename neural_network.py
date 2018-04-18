@@ -35,7 +35,7 @@ class NeuralNetwork:
         # For a binary classification problem
         model.compile(optimizer='rmsprop',
                       loss='binary_crossentropy', metrics=['accuracy'])
-        model.summary()
+        #model.summary()
         self.model = model
 
     def mutate(self):   
@@ -53,10 +53,4 @@ class NeuralNetwork:
 
     def predict(self, inputs):
         inputs = np.array([inputs,])
-        print('input shape', inputs.shape)
         return self.model.predict(inputs, batch_size=1)
-
-nn = NeuralNetwork(4,2)
-
-prediction = nn.predict([0.7, 0.2, 0.4, 0.1])
-print(prediction)
