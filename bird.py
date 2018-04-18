@@ -13,8 +13,8 @@ class Bird:
         if (brain):
             self.brain = brain
         else:
-            # inputs: birdY, birdVelocity, nearestPipeDist, nearestPipeGap
-            self.brain = NeuralNetwork(4,2)
+            # inputs: birdY, birdVelocity, pipeDist, gapTop, gapBottom
+            self.brain = NeuralNetwork(5,2)
 
     def draw(self):
         """ Draw the bird """
@@ -48,13 +48,14 @@ class Bird:
             change = 20 + sqrt(abs(vel))
         self.velocity += change
 
-    def think(self, nearestPipeDist, nearestPipeGap):
+    def think(self, dist, gapTop, gapBottom):
         inputs = []
-        # inputs: birdY, birdVelocity, nearestPipeDist, nearestPipeGap
+        # inputs: birdY, birdVelocity, pipeDist, gapTop, gapBottom
         inputs.append(self.centerY / WINDOW_HEIGHT)
         inputs.append(self.velocity / 10)
-        inputs.append(nearestPipeDist)
-        inputs.append(nearestPipeGap)
+        inputs.append(dist)
+        inputs.append(gapTop)
+        inputs.append(gapBottom)
         outputs = self.brain.predict(inputs)[0]
         if (outputs[0] > outputs[1]):
             self.up()

@@ -26,6 +26,8 @@ class Pipe:
         self.upperHeight = WINDOW_HEIGHT - gapBottom
         self.upperCenterY = WINDOW_HEIGHT - (self.upperHeight // 2)
 
+        self.gapTop = gapTop
+        self.gapBottom = gapBottom
         self.gapLocation = gapLocation
         self.gapSize = gapSize
         self.rightCorner = centerX + (PIPE_WIDTH // 2)

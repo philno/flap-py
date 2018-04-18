@@ -55,9 +55,10 @@ class Flap(arcade.Window):
         bird = self.bird
         bird.update()
         nearestPipe = self.get_nearest_pipe(bird)
-        nearestPipeDist = (nearestPipe.rightCorner - bird.centerX) / self.get_pipe_dist()
-        nearestPipeGap = nearestPipe.gapLocation / WINDOW_HEIGHT
-        bird.think(nearestPipeDist, nearestPipeGap)
+        dist = (nearestPipe.rightCorner - bird.centerX) / self.get_pipe_dist()
+        gapTop = nearestPipe.gapTop / WINDOW_HEIGHT
+        gapBottom = nearestPipe.gapBottom / WINDOW_HEIGHT
+        bird.think(dist, gapTop, gapBottom)
 
     def add_pipe(self):
         insertAt = PIPE_WIDTH*6
