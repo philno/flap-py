@@ -1,5 +1,5 @@
 from random import random, randint
-from keras.models import Sequential
+from keras.models import Sequential, clone_model
 from keras.layers import Dense
 from typing import Optional
 import numpy as np
@@ -43,16 +43,21 @@ def random_merge(list1, list2, prob1):
     result = np.array(result)
     return result
 
+
 class NeuralNetwork:
-    def __init__(self, inputs: int, outputs: int, weights=None):
-        model = Sequential()
-        model.add(Dense(units=inputs, activation='relu',
-                        input_dim=inputs, bias_initializer='glorot_uniform'))
-        model.add(Dense(units=outputs, activation='softmax',
-                        bias_initializer='glorot_uniform'))
-        # For a binary classification problem
-        model.compile(optimizer='rmsprop',
-                      loss='binary_crossentropy', metrics=['accuracy'])
+    def __init__(self, inputs: int, outputs: int, model=None, weights=None):
+        if (model):
+            # creates new random weights. hopefully saves time!
+            model = clone_model(model)
+        else:
+            model = Sequential()
+            model.add(Dense(units=inputs, activation='relu',
+                            input_dim=inputs, bias_initializer='glorot_uniform'))
+            model.add(Dense(units=outputs, activation='softmax',
+                            bias_initializer='glorot_uniform'))
+            # For a binary classification problem
+            model.compile(optimizer='rmsprop',
+                        loss='binary_crossentropy', metrics=['accuracy'])
         #model.summary()
         if (weights):
             model.set_weights(weights)
@@ -60,7 +65,6 @@ class NeuralNetwork:
         self.model = model
         self.inputs = inputs
         self.outputs = outputs
-
 
     def mutate(self):   
         model = self.model
@@ -84,7 +88,7 @@ class NeuralNetwork:
         return child1, child2
 
     def copy(self) -> Optional['NeuralNetwork']:
-        return NeuralNetwork(self.inputs, self.outputs, self.model.get_weights())
+        return NeuralNetwork(self.inputs, self.outputs, self.model, self.model.get_weights())
 
     def predict(self, inputs):
         inputs = np.array([inputs,])

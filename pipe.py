@@ -13,8 +13,8 @@ class Pipe:
         self.changeX = -3
         gapSize = floor(uniform(0.7, 1) * 100)
         gapLocation = floor(uniform(0.25, 0.75) * WINDOW_HEIGHT)
-        gapTop = gapLocation - gapSize
-        gapBottom = gapLocation + gapSize
+        gapTop = gapLocation + gapSize
+        gapBottom = gapLocation - gapSize
         if (gapTop < 0):
             gapTop = 0
         if (gapBottom > WINDOW_HEIGHT):
@@ -42,6 +42,43 @@ class Pipe:
     def append_shapes(self, shapes: arcade.ShapeElementList):
         shapes.append(arcade.create_rectangle_filled(self.centerX, self.upperCenterY, PIPE_WIDTH, self.upperHeight, self.color))
         shapes.append(arcade.create_rectangle_filled(self.centerX, self.lowerCenterY, PIPE_WIDTH, self.lowerHeight, self.color))
+
+    def append_points(self, points, colors):   
+        halfWidth = PIPE_WIDTH / 2
+        centerX = self.centerX
+        left = centerX - halfWidth
+        right = centerX + halfWidth
+        gapTop = self.gapTop
+        gapBottom = self.gapBottom
+
+        # top part of the pipe
+        topLeft = (left, WINDOW_HEIGHT)
+        topRight = (right, WINDOW_HEIGHT)
+        bottomLeft = (left, gapTop)
+        bottomRight = (right, gapTop)
+
+        points.append(topLeft)
+        points.append(topRight)
+        points.append(bottomRight)
+        points.append(bottomLeft)
+        
+        for i in range(4):
+            colors.append(self.color)
+
+        # bottom part of the pipe
+        topLeft = (left, gapBottom)
+        topRight = (right, gapBottom)
+        bottomLeft = (left, 0)
+        bottomRight = (right, 0)
+
+        points.append(topLeft)
+        points.append(topRight)
+        points.append(bottomRight)
+        points.append(bottomLeft)
+        
+        for i in range(4):
+            colors.append(self.color)
+        
 
     def update(self):
         """ Code to control the pipe's movement. """

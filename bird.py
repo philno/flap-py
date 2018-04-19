@@ -2,27 +2,54 @@ import arcade
 from settings import WINDOW_HEIGHT
 from math import sqrt
 from neural_network import NeuralNetwork
+
+# inputs: birdY, birdVelocity, pipeDist, gapTop, gapBottom
+inputNum = 5
+outputNum = 2
+brainPattern = NeuralNetwork(inputNum, outputNum)
 class Bird:
     def __init__(self, brain=None):
         self.changeY = -1.0123
         self.velocity = 0
         self.centerX = 40
         self.centerY = WINDOW_HEIGHT // 2
+        self.radius = 18
+        self.color = arcade.color.AUBURN
         self.score = 0
         self.frameCounter = 0
         if (brain):
             self.brain = brain
         else:
-            # inputs: birdY, birdVelocity, pipeDist, gapTop, gapBottom
-            self.brain = NeuralNetwork(5,2)
+            self.brain = NeuralNetwork(inputNum, outputNum, model=brainPattern.model)
 
     def draw(self):
         """ Draw the bird """
-        arcade.draw_circle_filled(self.centerX, self.centerY, 18, arcade.color.AUBURN + (100,))
+        arcade.draw_circle_filled(self.centerX, self.centerY, self.radius, self.color)
     
     def append_shapes(self, shapes: arcade.ShapeElementList):
-        radius = 18
-        shapes.append(arcade.create_ellipse_filled(self.centerX, self.centerY, radius, radius, arcade.color.AUBURN))
+        radius = self.radius
+        shapes.append(arcade.create_ellipse_filled(self.centerX, self.centerY, radius, radius, self.color))
+
+    def append_points(self, points, colors):   
+        halfWidth = self.radius
+        centerX = self.centerX
+        centerY = self.centerY
+        left = centerX - halfWidth
+        right = centerX + halfWidth
+        top = centerY + halfWidth
+        bottom = centerY - halfWidth
+
+        # top part of the bird
+        top = (centerX, top)
+        bottomLeft = (left, bottom)
+        bottomRight = (right, bottom)
+
+        points.append(bottomLeft)
+        points.append(top)
+        points.append(bottomRight)
+        
+        for i in range(3):
+            colors.append(self.color)
 
     def update(self):
         """ Code to control the bird's movement. """

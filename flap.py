@@ -28,17 +28,23 @@ class Flap(arcade.Window):
         
         # Add birds
         self.birds = []
-        for i in range(10):
+        for i in range(50):
             self.birds.append(Bird())
 
     def on_draw(self):
         """ Called whenever we need to draw the window. """
         shapes = arcade.ShapeElementList()
+        pipePoints = []
+        pipeColors = []
         for pipe in self.pipes:
-            pipe.append_shapes(shapes)
+            pipe.append_points(pipePoints, pipeColors)
+        shapes.append(arcade.create_rectangles_filled_with_colors(pipePoints, pipeColors))
 
+        birdPoints = []
+        birdColors = []
         for bird in self.birds:
-            bird.append_shapes(shapes)
+            bird.append_points(birdPoints, birdColors)
+        shapes.append(arcade.create_triangles_filled_with_colors(birdPoints, birdColors))
 
         arcade.start_render()
         shapes.draw()
