@@ -12,6 +12,7 @@ class Flap(arcade.Window):
 
         # Set the background color
         arcade.set_background_color(arcade.color.WHITE_SMOKE)
+        self.highScore = 0
         self.restart()
 
     def on_key_release(self, key: int, modifiers: int):
@@ -25,8 +26,10 @@ class Flap(arcade.Window):
             if (self.pipes[-1].centerX > WINDOW_WIDTH + 2*self.get_pipe_dist() + 2* PIPE_WIDTH):
                 break
         
-        # Add a bird
-        self.bird = Bird(None)
+        # Add birds
+        self.birds = []
+        for i in range(25):
+            self.birds.append(Bird())
 
     def on_draw(self):
         """ Called whenever we need to draw the window. """
@@ -34,14 +37,13 @@ class Flap(arcade.Window):
         for pipe in self.pipes:
             pipe.draw()
 
-        arcade.draw_text('Score: ' + str(self.bird.score), WINDOW_WIDTH//2, WINDOW_HEIGHT - FONT_SIZE - 10, arcade.color.TIGERS_EYE, FONT_SIZE)
+        for bird in self.birds:
+            bird.draw()
 
-        self.bird.draw()
+        arcade.draw_text('High Score: ' + str(self.highScore), WINDOW_WIDTH//2, WINDOW_HEIGHT - FONT_SIZE - 10, arcade.color.TIGERS_EYE, FONT_SIZE)
+
 
     def update(self, delta_time):
-        if (self.bird.centerY < 0):
-            self.restart()
-
         for pipe in self.pipes[:]:
             if (pipe.centerX < -PIPE_WIDTH):
                 self.pipes.remove(pipe)
@@ -49,16 +51,30 @@ class Flap(arcade.Window):
                 continue
             # else   
             pipe.update()
-            if (pipe.hits(self.bird)):
-                self.restart()
         
-        bird = self.bird
-        bird.update()
-        nearestPipe = self.get_nearest_pipe(bird)
-        dist = (nearestPipe.rightCorner - bird.centerX) / self.get_pipe_dist()
-        gapTop = nearestPipe.gapTop / WINDOW_HEIGHT
-        gapBottom = nearestPipe.gapBottom / WINDOW_HEIGHT
-        bird.think(dist, gapTop, gapBottom)
+        birds = self.birds
+
+        if (len(birds) <= 0):
+            self.restart()
+            return
+        # else
+        self.highScore = birds[0].score
+        for bird in birds:
+            if (bird.centerY < 0):
+                birds.remove(bird)
+                continue
+
+            bird.update()
+            nearestPipe = self.get_nearest_pipe(bird)
+            if (nearestPipe.hits(bird)):
+                birds.remove(bird)
+                continue
+            
+            dist = (nearestPipe.rightCorner - bird.centerX) / self.get_pipe_dist()
+            gapTop = nearestPipe.gapTop / WINDOW_HEIGHT
+            gapBottom = nearestPipe.gapBottom / WINDOW_HEIGHT
+            bird.think(dist, gapTop, gapBottom)
+            
 
     def add_pipe(self):
         insertAt = PIPE_WIDTH*6
@@ -81,7 +97,8 @@ class Flap(arcade.Window):
 def main():
     window = Flap(WINDOW_WIDTH, WINDOW_HEIGHT, "flap-py")
 
+    for i in range(42):
+        window.update(0)
     arcade.run()
-
 
 main()

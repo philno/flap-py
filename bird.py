@@ -3,7 +3,7 @@ from settings import WINDOW_HEIGHT
 from math import sqrt
 from neural_network import NeuralNetwork
 class Bird:
-    def __init__(self, brain):
+    def __init__(self, brain=None):
         self.changeY = -1.0123
         self.velocity = 0
         self.centerX = 40
@@ -18,7 +18,7 @@ class Bird:
 
     def draw(self):
         """ Draw the bird """
-        arcade.draw_circle_filled(self.centerX, self.centerY, 18, arcade.color.AUBURN)
+        arcade.draw_circle_filled(self.centerX, self.centerY, 18, arcade.color.AUBURN + (100,))
 
     def update(self):
         """ Code to control the bird's movement. """
