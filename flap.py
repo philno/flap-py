@@ -28,20 +28,21 @@ class Flap(arcade.Window):
         
         # Add birds
         self.birds = []
-        for i in range(25):
+        for i in range(10):
             self.birds.append(Bird())
 
     def on_draw(self):
         """ Called whenever we need to draw the window. """
-        arcade.start_render()
+        shapes = arcade.ShapeElementList()
         for pipe in self.pipes:
-            pipe.draw()
+            pipe.append_shapes(shapes)
 
         for bird in self.birds:
-            bird.draw()
+            bird.append_shapes(shapes)
 
+        arcade.start_render()
+        shapes.draw()
         arcade.draw_text('High Score: ' + str(self.highScore), WINDOW_WIDTH//2, WINDOW_HEIGHT - FONT_SIZE - 10, arcade.color.TIGERS_EYE, FONT_SIZE)
-
 
     def update(self, delta_time):
         for pipe in self.pipes[:]:
@@ -58,7 +59,9 @@ class Flap(arcade.Window):
             self.restart()
             return
         # else
-        self.highScore = birds[0].score
+        if (birds[0].score > self.highScore):
+            self.highScore = birds[0].score
+        
         for bird in birds:
             if (bird.centerY < 0):
                 birds.remove(bird)

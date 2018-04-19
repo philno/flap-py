@@ -19,6 +19,10 @@ class Bird:
     def draw(self):
         """ Draw the bird """
         arcade.draw_circle_filled(self.centerX, self.centerY, 18, arcade.color.AUBURN + (100,))
+    
+    def append_shapes(self, shapes: arcade.ShapeElementList):
+        radius = 18
+        shapes.append(arcade.create_ellipse_filled(self.centerX, self.centerY, radius, radius, arcade.color.AUBURN))
 
     def update(self):
         """ Code to control the bird's movement. """
@@ -31,7 +35,7 @@ class Bird:
             self.centerY = -1
 
         self.frameCounter += 1
-        if (self.frameCounter % 61 == 0): 
+        if (self.frameCounter % 21 == 0): 
             self.score += 1
             self.frameCounter = 0
     

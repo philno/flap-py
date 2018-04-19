@@ -39,15 +39,23 @@ class Pipe:
         # Draw lower part
         arcade.draw_rectangle_filled(self.centerX, self.lowerCenterY, PIPE_WIDTH, self.lowerHeight, self.color)
 
+    def append_shapes(self, shapes: arcade.ShapeElementList):
+        shapes.append(arcade.create_rectangle_filled(self.centerX, self.upperCenterY, PIPE_WIDTH, self.upperHeight, self.color))
+        shapes.append(arcade.create_rectangle_filled(self.centerX, self.lowerCenterY, PIPE_WIDTH, self.lowerHeight, self.color))
+
     def update(self):
         """ Code to control the pipe's movement. """
         # Move the ball
         self.centerX += self.changeX
+        arcade.Sprite()
     
     def hits(self, bird: Bird) -> bool:
         radius = PIPE_WIDTH / 2
 
         if (abs(bird.centerX - self.centerX) <= radius):
-            return (abs(bird.centerY - self.gapLocation) > self.gapSize)
+            result = (abs(bird.centerY - self.gapLocation) > self.gapSize)
+            if (not result):
+                bird.score += 2
+            return result
         # else
         return False
