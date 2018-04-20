@@ -11,7 +11,7 @@ def change_weights(weights):
             change_weights(sub)
         return
 
-    rate = 0.04
+    rate = 0.07
     
     for i in range(len(weights)):
         if (random() >= rate):

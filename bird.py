@@ -31,7 +31,7 @@ class Bird:
         shapes.append(arcade.create_ellipse_filled(self.centerX, self.centerY, radius, radius, self.color))
 
     def append_points(self, points, colors):   
-        halfWidth = self.radius
+        halfWidth = self.radius / 2
         centerX = self.centerX
         centerY = self.centerY
         left = centerX - halfWidth
@@ -83,7 +83,7 @@ class Bird:
         inputs = []
         # inputs: birdY, birdVelocity, pipeDist, gapTop, gapBottom
         inputs.append(self.centerY / WINDOW_HEIGHT)
-        inputs.append(self.velocity / 10)
+        inputs.append(self.velocity / 20)
         inputs.append(dist)
         inputs.append(gapTop)
         inputs.append(gapBottom)
