@@ -1,5 +1,5 @@
 import arcade
-from settings import WINDOW_HEIGHT
+from settings import WINDOW_HEIGHT, VELOCITY_BOUND
 from math import sqrt
 from neural_network import NeuralNetwork
 
@@ -54,6 +54,12 @@ class Bird:
     def update(self):
         """ Code to control the bird's movement. """
         self.velocity += self.changeY
+        bounds = VELOCITY_BOUND
+        if (self.velocity > bounds):
+            self.velocity = bounds
+        elif(self.velocity < -bounds):
+            self.velocity = -bounds
+        
         self.centerY += self.velocity
 
         if (self.centerY > WINDOW_HEIGHT):
@@ -62,7 +68,7 @@ class Bird:
             self.centerY = -1
 
         self.frameCounter += 1
-        if (self.frameCounter % 21 == 0): 
+        if (self.frameCounter % 10 == 0): 
             self.score += 1
             self.frameCounter = 0
     
@@ -83,7 +89,7 @@ class Bird:
         inputs = []
         # inputs: birdY, birdVelocity, pipeDist, gapTop, gapBottom
         inputs.append(self.centerY / WINDOW_HEIGHT)
-        inputs.append(self.velocity / 20)
+        inputs.append(self.velocity / VELOCITY_BOUND)
         inputs.append(dist)
         inputs.append(gapTop)
         inputs.append(gapBottom)
