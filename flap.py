@@ -108,17 +108,16 @@ class Flap(arcade.Window):
 def main():
     window = Flap(WINDOW_WIDTH, WINDOW_HEIGHT, "flap-py")
 
-    for i in range(20):
-        while(window.pop.hasAlive()):
-            if (window.highScore > 9000):
-                break
-            window.update(0)
-        print('High Score', window.highScore)
-        if (window.highScore > 9000):
-            print('over 9000!!!')
-            break
-        window.on_draw()
-        window.update(0)
+#    for i in range(20):
+ #       while(window.pop.hasAlive()):
+  #          if (window.highScore > 9000):
+   #             break
+    #        window.update(0)
+     #   print('High Score', window.highScore)
+      #  if (window.highScore > 9000):
+       #     print('over 9000!!!')
+        #    break
+        #window.update(0)
     arcade.run()
 
 main()

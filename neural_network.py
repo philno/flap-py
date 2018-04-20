@@ -18,7 +18,7 @@ def change_weights(weights):
             # dont change the weight.
             continue
         # else    
-        change = 0.1
+        change = 0.2
         if (random() < 0.5):
             change *= -1
 
@@ -26,19 +26,20 @@ def change_weights(weights):
 
 def random_merge(list1, list2, prob1):
     result = []
+
     if (not np.isscalar(list1[0])):
-        for i in range(len(list1)):
-            result.append(random_merge(list1[i], list2[i], prob1))
+        for elem1, elem2 in zip(list1,list2):
+            result.append(random_merge(elem1, elem2, prob1))
     else:
-        for i, elem in enumerate(list1):
+        for elem1, elem2 in zip(list1,list2):
             rnd = random()
 
             if (rnd < prob1):
                 # pick element from list1
-                result.append(elem)
+                result.append(elem1)
             else:
                 # pick element from list2
-                result.append(list2[i])
+                result.append(elem2)
 
     result = np.array(result)
     return result
@@ -56,12 +57,12 @@ class NeuralNetwork:
             model.add(Dense(units=outputs, activation='softmax',
                             bias_initializer='glorot_uniform'))
             # For a binary classification problem
-            model.compile(optimizer='rmsprop',
-                        loss='binary_crossentropy', metrics=['accuracy'])
+           # model.compile(optimizer='rmsprop',
+          #              loss='binary_crossentropy', metrics=['accuracy'])
         #model.summary()
         if (weights):
             model.set_weights(weights)
-
+            
         self.model = model
         self.inputs = inputs
         self.outputs = outputs
@@ -88,7 +89,8 @@ class NeuralNetwork:
         return child1, child2
 
     def copy(self) -> Optional['NeuralNetwork']:
-        return NeuralNetwork(self.inputs, self.outputs, self.model, self.model.get_weights())
+        #return self
+        return NeuralNetwork(self.inputs, self.outputs, self.model)
 
     def predict(self, inputs):
         inputs = np.array([inputs,])
