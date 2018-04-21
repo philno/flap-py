@@ -30,7 +30,8 @@ class Pipe:
         self.gapBottom = gapBottom
         self.gapLocation = gapLocation
         self.gapSize = gapSize
-        self.rightCorner = centerX + (PIPE_WIDTH // 2)
+        self.halfWidth = PIPE_WIDTH / 2
+        self.rightCorner = centerX + self.halfWidth
 
     def draw(self):
         """ Draw the pipe """
@@ -84,10 +85,10 @@ class Pipe:
         """ Code to control the pipe's movement. """
         # Move the ball
         self.centerX += self.changeX
-        arcade.Sprite()
+        self.rightCorner = self.centerX + self.halfWidth
     
     def hits(self, bird: Bird) -> bool:
-        radius = PIPE_WIDTH / 2
+        radius = self.halfWidth
 
         if (abs(bird.centerX - self.centerX) <= radius):
             result = (abs(bird.centerY - self.gapLocation) > self.gapSize)
