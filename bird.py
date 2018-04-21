@@ -96,4 +96,8 @@ class Bird:
         outputs = self.brain.predict(inputs)[0]
         if (outputs[0] > outputs[1]):
             self.up()
+
+    def save(self, fileName: str):
+        self.brain.model.save(fileName + '.h5', include_optimizer=False)
+
                 

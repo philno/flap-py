@@ -77,7 +77,7 @@ class NeuralNetwork:
         weights1 = self.model.get_weights()
         weights2 = partner.model.get_weights()
 
-        rate = 0.15
+        rate = 0.2
         result1 = random_merge(weights1, weights2, rate)
         result2 = random_merge(weights1, weights2, 1 - rate)
 

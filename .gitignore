@@ -101,3 +101,6 @@ ENV/
 .mypy_cache/
 
 *.stackdump
+*.h5
+log.txt
+time-test.py
