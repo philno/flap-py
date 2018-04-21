@@ -2,11 +2,24 @@ import arcade
 from settings import WINDOW_HEIGHT, VELOCITY_BOUND
 from math import sqrt
 from neural_network import NeuralNetwork
+from logger import get_logger
+from random import randint
+
+
+logger = get_logger('Bird')
 
 # inputs: birdY, birdVelocity, pipeDist, gapTop, gapBottom
 inputNum = 5
 outputNum = 2
 brainPattern = NeuralNetwork(inputNum, outputNum)
+
+def random_color():
+    r = randint(0, 210)
+    g = randint(0, 210)
+    b = randint(0, 210)
+    result = (r, g, b, 150)
+    return result
+
 class Bird:
     def __init__(self, brain=None):
         self.changeY = -1.0123
@@ -14,7 +27,7 @@ class Bird:
         self.centerX = 40
         self.centerY = WINDOW_HEIGHT // 2
         self.radius = 18
-        self.color = arcade.color.AUBURN
+        self.color = random_color()
         self.score = 0
         self.frameCounter = 0
         if (brain):
@@ -98,6 +111,6 @@ class Bird:
             self.up()
 
     def save(self, fileName: str):
-        self.brain.model.save(fileName + '.h5', include_optimizer=False)
+        self.brain.model.save('best/' + fileName + '.h5', include_optimizer=False)
 
                 

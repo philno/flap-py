@@ -18,7 +18,6 @@ class Population:
 
     def nextGeneration(self):
         self.counter += 1
-        logger.info('Generation %d', self.counter)
         dead = self.dead
         nextGen = []
         if(dead):
@@ -26,6 +25,9 @@ class Population:
             winners = dead[-self.quarterSize:]
             weights = [b.score for b in winners]
             weightSum = sum(weights)
+            logger.info('Best Quarter Score avg: %f', weightSum/self.quarterSize)
+            logger.info('Scores: %s', str(weights))
+            logger.info('Generation %d', self.counter)
             weights = [w/weightSum for w in weights]
             winners = [b.brain for b in winners]
             dead = [b.brain for b in dead]

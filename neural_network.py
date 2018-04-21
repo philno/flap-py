@@ -1,4 +1,4 @@
-from random import random, randint
+from random import random, randint, uniform
 from keras.models import Sequential, clone_model
 from keras.layers import Dense
 from typing import Optional
@@ -18,11 +18,11 @@ def change_weights(weights):
             # dont change the weight.
             continue
         # else    
-        change = 0.2
-        if (random() < 0.5):
-            change *= -1
+        #change = 0.2
+        #if (random() < 0.5):
+        #    change *= -1
 
-        weights[i] += change
+        weights[i] += uniform(-1, 1)
 
 def random_merge(list1, list2, prob1):
     result = []
