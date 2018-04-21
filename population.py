@@ -4,6 +4,7 @@ from neural_network import NeuralNetwork
 from logger import get_logger
 from random import random
 import numpy as np
+from keras import backend as be
 
 logger = get_logger('Population')
 
@@ -22,6 +23,7 @@ class Population:
         nextGen = []
         if(dead):
             dead[-1].save('gen' + str(self.counter))
+            be.clear_session()
             winners = dead[-self.quarterSize:]
             weights = [b.score for b in winners]
             weightSum = sum(weights)

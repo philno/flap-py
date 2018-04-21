@@ -11,7 +11,6 @@ logger = get_logger('Bird')
 # inputs: birdY, birdVelocity, pipeDist, gapTop, gapBottom
 inputNum = 5
 outputNum = 2
-brainPattern = NeuralNetwork(inputNum, outputNum)
 
 def random_color():
     r = randint(0, 210)
@@ -33,7 +32,7 @@ class Bird:
         if (brain):
             self.brain = brain
         else:
-            self.brain = NeuralNetwork(inputNum, outputNum, model=brainPattern.model)
+            self.brain = NeuralNetwork(inputNum, outputNum)
 
     def draw(self):
         """ Draw the bird """

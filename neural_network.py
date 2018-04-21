@@ -46,52 +46,61 @@ def random_merge(list1, list2, prob1):
 
 
 class NeuralNetwork:
-    def __init__(self, inputs: int, outputs: int, model=None, weights=None):
-        if (model):
+    def __init__(self, inputs: int, outputs: int, weights=None):
+        #if (model):
             # creates new random weights. hopefully saves time!
-            model = clone_model(model)
-        else:
-            model = Sequential()
-            model.add(Dense(units=inputs, activation='relu',
-                            input_dim=inputs, bias_initializer='glorot_uniform'))
-            model.add(Dense(units=outputs, activation='softmax',
-                            bias_initializer='glorot_uniform'))
+        #    model = clone_model(model)
+        #else:
+        model = Sequential()
+        model.add(Dense(units=inputs, activation='relu',
+                        input_dim=inputs, bias_initializer='glorot_uniform'))
+        model.add(Dense(units=outputs, activation='softmax',
+                        bias_initializer='glorot_uniform'))
             # For a binary classification problem
            # model.compile(optimizer='rmsprop',
           #              loss='binary_crossentropy', metrics=['accuracy'])
         #model.summary()
-        if (weights):
+        if (weights != None):
             model.set_weights(weights)
+        else:
+            weights = model.get_weights()
             
         self.model = model
         self.inputs = inputs
         self.outputs = outputs
+        self.weights = weights
 
     def mutate(self):   
-        model = self.model
-        weights = model.get_weights()
+        weights = self.get_weights()
         change_weights(weights)
-        model.set_weights(weights)
+        self.set_weights(weights)
 
     def crossover(self, partner: Optional['NeuralNetwork']):              
-        weights1 = self.model.get_weights()
-        weights2 = partner.model.get_weights()
+        weights1 = self.get_weights()
+        weights2 = partner.get_weights()
 
         rate = 0.2
         result1 = random_merge(weights1, weights2, rate)
         result2 = random_merge(weights1, weights2, 1 - rate)
 
         child1 = self.copy()
-        child1.model.set_weights(result1)
+        child1.set_weights(result1)
 
         child2 = partner.copy()
-        child2.model.set_weights(result2)
+        child2.set_weights(result2)
         return child1, child2
 
     def copy(self) -> Optional['NeuralNetwork']:
         #return self
-        return NeuralNetwork(self.inputs, self.outputs, self.model)
+        return NeuralNetwork(self.inputs, self.outputs, self.weights)
 
     def predict(self, inputs):
         inputs = np.array([inputs,])
         return self.model.predict(inputs, batch_size=1)
+
+    def get_weights(self):
+        return self.weights;
+    
+    def set_weights(self, weights):
+        self.weights = weights
+        self.model.set_weights(weights)
