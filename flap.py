@@ -57,26 +57,27 @@ class Flap(arcade.Window):
         arcade.draw_text('High Score: ' + str(self.highScore), WINDOW_WIDTH//2 - 40, WINDOW_HEIGHT - FONT_SIZE - 10, arcade.color.TIGERS_EYE, FONT_SIZE)
 
     def update(self, delta_time):
-        for pipe in self.pipes[:]:
-            if (pipe.centerX < -PIPE_WIDTH):
-                self.pipes.remove(pipe)
-                self.add_pipe()
-                continue
-            # else   
-            pipe.update()
-        
-        pop = self.pop
-        birds = pop.alive
+        for i in range(2):
+            for pipe in self.pipes[:]:
+                if (pipe.centerX < -PIPE_WIDTH):
+                    self.pipes.remove(pipe)
+                    self.add_pipe()
+                    continue
+                # else   
+                pipe.update()
+            
+            pop = self.pop
+            birds = pop.alive
 
-        if (not pop.hasAlive()):
-            self.restart()
-            return
-        # else
-        if (birds[0].score > self.highScore):
-            self.highScore = birds[0].score
-        
-        for bird in birds:
-            self.update_bird(bird)
+            if (not pop.hasAlive()):
+                self.restart()
+                return
+            # else
+            if (birds[0].score > self.highScore):
+                self.highScore = birds[0].score
+            
+            for bird in birds[:]:
+                self.update_bird(bird)
 
     def update_bird(self, bird: Bird):
         pop = self.pop
@@ -127,7 +128,7 @@ def pretrain(window):
       
 def main():
     window = Flap(WINDOW_WIDTH, WINDOW_HEIGHT, "flap-py")
-    pretrain(window)
+    #pretrain(window)
     arcade.run()
 
 if __name__ == '__main__':
