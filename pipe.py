@@ -1,5 +1,5 @@
 import arcade
-from random import uniform
+from random import uniform, randint
 from math import floor
 from settings import WINDOW_HEIGHT, PIPE_WIDTH
 from bird import Bird
@@ -11,7 +11,7 @@ class Pipe:
         self.centerX = centerX
         self.color = color
         self.changeX = -3
-        gapSize = floor(uniform(0.7, 1) * 100)
+        gapSize = randint(60,80)
         gapLocation = floor(uniform(0.25, 0.75) * WINDOW_HEIGHT)
         gapTop = gapLocation + gapSize
         gapBottom = gapLocation - gapSize
