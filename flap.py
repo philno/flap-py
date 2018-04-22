@@ -18,7 +18,7 @@ class Flap(arcade.Window):
         # Set the background color
         arcade.set_background_color(arcade.color.WHITE_SMOKE)
         self.highScore = 0
-        self.pop = Population(200)
+        self.pop = Population(240)
         self.restart()
 
     def on_key_release(self, key: int, modifiers: int):
@@ -57,7 +57,7 @@ class Flap(arcade.Window):
         arcade.draw_text('High Score: ' + str(self.highScore), WINDOW_WIDTH//2 - 40, WINDOW_HEIGHT - FONT_SIZE - 10, arcade.color.TIGERS_EYE, FONT_SIZE)
 
     def update(self, delta_time):
-        for i in range(4):
+        for i in range(2):
             for pipe in self.pipes[:]:
                 if (pipe.centerX < -PIPE_WIDTH):
                     self.pipes.remove(pipe)

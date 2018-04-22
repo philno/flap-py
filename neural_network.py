@@ -75,19 +75,20 @@ class NeuralNetwork:
         change_weights(weights)
         self.set_weights(weights)
 
-    def crossover(self, partner: Optional['NeuralNetwork']):              
-        weights1 = self.get_weights()
-        weights2 = partner.get_weights()
-
-        rate = 0.2
-        result1 = random_merge(weights1, weights2, rate)
-        result2 = random_merge(weights1, weights2, 1 - rate)
-
+    def crossover(self, partner: Optional['NeuralNetwork']):
         child1 = self.copy()
-        child1.set_weights(result1)
-
         child2 = partner.copy()
-        child2.set_weights(result2)
+
+        if (self != partner):              
+            weights1 = self.get_weights()
+            weights2 = partner.get_weights()
+
+            rate = 0.2
+            result1 = random_merge(weights1, weights2, rate)
+            result2 = random_merge(weights1, weights2, 1 - rate)
+
+            child1.set_weights(result1)
+            child2.set_weights(result2)
         return child1, child2
 
     def copy(self) -> Optional['NeuralNetwork']:

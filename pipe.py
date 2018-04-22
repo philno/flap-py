@@ -11,7 +11,7 @@ class Pipe:
         self.centerX = centerX
         self.color = color
         self.changeX = -3
-        gapSize = randint(60,80)
+        gapSize = randint(50,70)
         gapLocation = floor(uniform(0.25, 0.75) * WINDOW_HEIGHT)
         gapTop = gapLocation + gapSize
         gapBottom = gapLocation - gapSize
@@ -91,9 +91,10 @@ class Pipe:
         radius = self.halfWidth
 
         if (abs(bird.centerX - self.centerX) <= radius):
-            result = (abs(bird.centerY - self.gapLocation) > self.gapSize)
-            if (not result):
+            birdY = bird.centerY
+            inGap = (self.gapBottom < birdY < self.gapTop)
+            if (inGap):
                 bird.score += 2
-            return result
+            return not inGap
         # else
         return False
