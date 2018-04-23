@@ -104,3 +104,4 @@ ENV/
 *.h5
 log.txt
 time-test.py
+stats/*

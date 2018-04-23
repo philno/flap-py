@@ -11,18 +11,18 @@ def change_weights(weights):
             change_weights(sub)
         return
 
-    rate = 0.07
+    rate = 0.04
     
     for i in range(len(weights)):
         if (random() >= rate):
             # dont change the weight.
             continue
-        # else    
-        #change = 0.2
-        #if (random() < 0.5):
-        #    change *= -1
+        #else    
+        change = uniform(0.05,0.15)
+        if (random() < 0.5):
+            change *= -1
 
-        weights[i] += uniform(-1, 1)
+        weights[i] += change
 
 def random_merge(list1, list2, prob1):
     result = []
@@ -100,7 +100,7 @@ class NeuralNetwork:
         return self.model.predict(inputs, batch_size=1)
 
     def get_weights(self):
-        return self.weights;
+        return self.weights
     
     def set_weights(self, weights):
         self.weights = weights
