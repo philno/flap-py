@@ -18,7 +18,7 @@ class Flap(arcade.Window):
         # Set the background color
         arcade.set_background_color(arcade.color.WHITE_SMOKE)
         self.highScore = 0
-        self.pop = Population(240)
+        self.pop = Population(128)
         self.restart()
 
     def on_key_release(self, key: int, modifiers: int):
