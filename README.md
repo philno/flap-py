@@ -12,6 +12,8 @@ You want to install the dependencies with the python packet manager of your choi
 * tensorflow (or any keras backend of your choice)
 * keras
 * arcade
+* numpy
+* pygal (for plots of statistics)
 
 The main application file is `flap.py`. There, you can also configure the population size (128 should be a good value).
 You can generate different statistics like top and average score of each generation by running `stats.py`. The generated plots will open in your default browser.
